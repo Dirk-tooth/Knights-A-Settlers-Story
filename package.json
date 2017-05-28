@@ -11,7 +11,7 @@
   "repository" :
   { "type" : "git"
   , "url" : "https://github.com/Dirk-tooth/Knights-A-Settlers-Story.git"
-  }
+},
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^3.3.7",

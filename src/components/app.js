@@ -120,9 +120,9 @@ class Default extends React.Component {
 			politics:{winner: "", points: meta.politics.score},
 			science:{winner: "", points: meta.science.score},
 		}
-		
-			
-			
+
+
+
 	};
 	for (let i = 0; i < 3; i++)  this.state.players.push(protoPlayer(colors[i]));
   }
@@ -130,9 +130,11 @@ class Default extends React.Component {
 	  this.setState({[key]: value});
   }
   handleShiftPlayers(action) {
-	  action > 0 ? this.setState({ players: [...this.state.players, protoPlayer] }) : this.setState({players: this.state.players.slice(0, this.state.players.length - 1)});
+	  action > 0 ?
+		this.setState({ players: [...this.state.players, protoPlayer] }) :
+		this.setState({players: this.state.players.slice(0, this.state.players.length - 1)});
   }
-  
+
   mostOf(ourArray, ourItem) {
 	  const theMax = Math.max.apply(null, ourArray.map(elt => elt[ourItem]));
 	  return ourArray.filter(elt => elt[ourItem] === theMax).length === 1 ?
@@ -144,21 +146,21 @@ class Default extends React.Component {
 	  return player.gold.least ? meta.gold.poorest : player.gold.most ? meta.gold.richest : 0;
   }
   checkCards(player) {
-	  return (player.merchant ? meta.merchant.score : 0) + 
+	  return (player.merchant ? meta.merchant.score : 0) +
 			 (player.constitution ? meta.constitution.score : 0) +
 			 (player.printer ? meta.printer.score : 0);
   }
   checkThreshold(player) {
-	const theMax = Math.max.apply(null, ourArray.map(elt => elt[ourItem]));
-	
+
+
   }
-  
+
   changeScoreButton(color, scoreItem, delta) {
 	  this.setState({ players: this.state.players.map(item => item.color === color ?
 		Object.assign({}, item, { [scoreItem]: item[scoreItem] + delta) }) :
-		item) });		
+		item) });
   }
-  
+
   calcPlayerScore(color) {
 	  const player = this.state.players.find(player => player.color === color);
 	  return Object.keys(this.state.masters).reduce((acc, item) => this.state.masters[item].winner === color ?
@@ -167,13 +169,12 @@ class Default extends React.Component {
 		player.settlements * meta.settlements +
 		player.cities * meta.cities +
 		player.defenders * meta.defenders +
-		// this.checkThreshold(player) +
 		player.fish +
 		meta.spices(player.spices) +
 		meta.pirates(player.pirates) +
 		this.checkCards(player);
   }
-  
+
   render() {
     return (
       <div>
