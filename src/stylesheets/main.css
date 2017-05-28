@@ -1,0 +1,57 @@
+.header-bar>.container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+}
+
+.header-bar>.container>div {
+	color: white;
+	padding: 10px;
+}
+
+.title {
+	font-size: 2em;
+}
+
+.header-bar>.container>div>div {
+	padding: 10px;
+}
+
+.header-bar>.container>div>button {
+	font-size: 4em;
+	line-height: .5em;
+}
+
+.playerCount {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+}
+
+.winPoint {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+}
+
+.player-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+}
+
+.score-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+}
+
+.score-icons {
+	height: 2em;
+	width: auto;
+}
