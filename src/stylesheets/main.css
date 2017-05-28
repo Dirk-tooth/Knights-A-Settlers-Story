@@ -1,3 +1,5 @@
+html, body, #root, #root>div, .player-container { height: 100%}
+
 .header-bar>.container {
 	display: flex;
 	flex-direction: row;
@@ -50,8 +52,87 @@
 	flex-wrap: nowrap;
 	justify-content: space-around;
 }
+.score-button-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}	
 
-.score-icons {
-	height: 2em;
-	width: auto;
+.score-icons, .score-img{
+	height: 30px;
+	width: 30px;
+}
+
+.player-column .btn {
+	border: 0;
+	outline: 0;
+}
+
+.green{
+	color: green;
+	fill:green;
+	background-color: green;
+	border: 5px solid green;
+}
+.blue{
+	color: blue;
+	fill:blue;
+	background-color: blue;
+	border: 5px solid blue;
+
+}
+.red{
+	color: red;
+	fill:red;
+	background-color: red;
+	border: 5px solid red;
+
+}
+.orange{
+	color: orange;
+	fill:orange;
+	background-color: orange;
+	border: 5px solid orange;
+
+}
+.white{
+	color: black;
+	fill:black;
+	background-color:#bbbbbb;
+	border: 5px solid #bbbbbb;
+
+}
+.brown{
+	color: brown;
+	fill:brown;
+	background-color: brown;
+	border: 5px solid brown;
+
+}
+.grey {
+	opacity:  0.25;
+}
+.green, .blue, .red., .orange, .white, .brown {
+	width: 20px;
+	height: 20px;
+}
+
+.player-column{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	border: 2px solid black;
+}
+
+.oneOffs {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+}
+
+hr {
+	border-bottom-color: black;
 }

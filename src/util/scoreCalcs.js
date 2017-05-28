@@ -1,47 +1,40 @@
 // score calc functions ¯\_(ツ)_/¯
 
-function checkLeast(target, item){
-	return Object.keys(gameState).reduce((acc, player) => {
-		return (player === 'numPlayers' || player === 'winCondition') ? null :
-		(acc && gameState[player][item] >= gameState[target][item]) ? acc = true : acc = false;
-	}, true)
-}
+import meta from '../proto/meta';
 
-function checkMost(target, item){
-	return Object.keys(gameState).reduce((acc, player) => {
-		return (player === 'numPlayers' || player === 'winCondition') ? null :
-		(acc && gameState[player][item] < gameState[target][item]) ? acc = true : acc = false;
-	}, true)
-}
+const mostOf = (ourArray, ourItem, masters) => {
+	const theMax = Math.max.apply(null, ourArray.map(elt => elt[ourItem]));
+	console.log(checkThreshold(ourItem, theMax) ? "pass" : "fail");
+	return ourArray.filter(elt => elt[ourItem] === theMax).length === 1 && checkThreshold(ourItem, theMax) ?
+	ourArray.find(elt => elt[ourItem] === theMax).color :
+	// TODO: does not clear master if all drop below threshold 
+	checkThreshold(ourItem, theMax) ? masters[ourItem] : "";
+};
 
-var checkGold = player => gameState[player].gold.least ? meta.gold.poorest : gameState[player].gold.most ? meta.gold.richest : 0;
+const checkThreshold = (item, max) => meta[item].threshold && max >= meta[item].threshold;
 
-function checkThreshold(player){
-	return Object.keys(meta).reduce((acc, key) => {
-		return (meta[key].hasOwnProperty('threshold') && gameState[player][key].most) ? acc += meta[key].score : acc;
-	}, 0);
-}
+const checkGold = (players, color) => {
+	const most = players.reduce((acc, player) => player.gold > acc ? player.gold : acc, 0);
+	const richest = players.filter(player => player.gold === most).length > 1 ? '' : players.find(player => player.gold === most).color;
+	const least = players.reduce((acc, player) => player.gold < acc ? player.gold : acc, 100);
+	const poorest = players.filter(player => player.gold === least).map(player => player.color);
+	return color === richest ? meta.gold.richest : poorest.includes(color) ? meta.gold.poorest : 0;
+};
 
-var checkCards = player => (gameState[player].merchant ? meta.merchant.score : 0) + 
-						(gameState[player].constitution ? meta.constitution.score : 0) +
-						(gameState[player].printer ? meta.printer.score : 0);
+const checkCards = player => (player.merchant ? meta.merchant.score : 0) +
+	(player.constitution ? meta.constitution.score : 0) +
+	(player.printer ? meta.printer.score : 0);
 
-function calcScore(player){
-	return checkGold(player) +
-		gameState[player].settlements * meta.settlements +
-		gameState[player].cities * meta.cities +
-		gameState[player].defenders * meta.defenders +
-		checkThreshold(player) +
-		gameState[player].fish +
-		meta.spices(gameState[player].spices) +
-		meta.pirates(gameState[player].pirates) +
-		checkCards(player);
-}
+const calcPlayerScore = (playerState, masters, players) =>
+	Object.keys(masters).reduce((acc, item) =>
+		masters[item] === playerState.color ? acc + meta[item].score : acc, 0) +
+	checkGold(players, playerState.color) +
+	(playerState.settlements * meta.settlements.score) +
+	(playerState.cities * meta.cities.score) +
+	(playerState.defenders * meta.defenders) +
+	playerState.fish +
+	meta.spices.score(playerState.spices) +
+	meta.pirates.score(playerState.pirates) +
+	checkCards(playerState);
 
-function calcAllScore(){
-	return Object.keys(gameState).reduce((acc, player) => {
-		return (player === 'numPlayers' || player === 'winCondition') ? null : acc.push(calcScore(gameState[player]));
-	}, [])
-}
-
-export {checkLeast, checkMost, checkGold, checkThreshold, checkCards, calcScore, calcAllScore};
+export { mostOf, checkThreshold, checkGold, checkCards, calcPlayerScore };
