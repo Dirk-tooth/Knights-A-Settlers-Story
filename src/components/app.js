@@ -3,7 +3,7 @@ import HeaderBar from './header';
 import Player from './player';
 // import meta from '../proto/meta';
 import protoPlayer from '../proto/protoPlayer';
-import { mostOf, checkGold, checkCards, calcPlayerScore } from '../util/scoreCalcs';
+import { mostOf, calcPlayerScore } from '../util/scoreCalcs';
 
 const colors = ['green', 'blue', 'red', 'white', 'orange', 'brown'];
 
@@ -14,10 +14,6 @@ class Default extends React.Component {
 			players: [],
 			winPoint: 20,
 			masters: {
-				gold: {
-					richest: '',
-					poorest: '',
-				},
 				roads: '',
 				harbors: '',
 				knights: '',
@@ -38,9 +34,18 @@ class Default extends React.Component {
 		this.setState({ players: this.state.players.slice(0, this.state.players.length - 1) });
 	}
 	changeScoreButton(color, scoreItem, delta) {
-		this.setState({ players: this.state.players.map(item => item.color === color ?
-		Object.assign({}, item, { [scoreItem]: item[scoreItem] + delta }) :
-		item) });
+		const newPlayers = this.state.players.map(item => item.color === color ?
+			Object.assign({}, item, { [scoreItem]: item[scoreItem] + delta }) :
+			item);
+		this.setState({ players: newPlayers,
+			masters: this.state.masters.hasOwnProperty(scoreItem) ?
+				Object.assign({}, this.state.masters, {
+					[scoreItem]: mostOf(newPlayers, scoreItem) === '' ?
+						this.state.masters[scoreItem] :
+						mostOf(newPlayers, scoreItem),
+				}) :
+				this.state.masters,
+		});
 	}
 
 	render() {
@@ -56,7 +61,7 @@ class Default extends React.Component {
       {this.state.players.map((item, idx) => <Player
         className="player"
         key={idx}
-        score={calcPlayerScore(item, this.state.masters)}
+        score={calcPlayerScore(item, this.state.masters, this.state.players)}
         winPoint={this.state.winPoint}
         playerState={item}
         incrementerButton={(color, scoreItem, delta) => this.changeScoreButton(color, scoreItem, delta)}
